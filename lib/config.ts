@@ -80,7 +80,7 @@ export async function getRequestHostname(): Promise<string> {
 export async function getWebsiteUrl(): Promise<string> {
   const domain = await getRequestHostname();
   if (isLocalHostname(domain)) {
-    return 'http://localhost:3001';
+    return 'http://localhost:3000';
   }
   return `https://shop.${domain}`;
 }
