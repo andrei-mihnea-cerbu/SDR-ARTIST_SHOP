@@ -25,7 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const artist = await getArtistByWebsite();
   const artistName = artist?.name;
   const pageSeo = getPageSeo(pathname, artistName);
-  const ogImage = artist?.id ? getArtistPhotoUrl(artist.id, 'banner') : undefined;
+  const siteName = getSiteName(artistName);
+  const ogImage = artist?.id
+    ? getArtistPhotoUrl(artist.id, 'banner')
+    : undefined;
   const canonicalUrl = formatCanonicalUrl(pathname, websiteUrl);
 
   return {
@@ -35,32 +38,32 @@ export async function generateMetadata(): Promise<Metadata> {
       template: getTitleTemplate(artistName),
     },
     description: pageSeo.description,
+    applicationName: siteName,
     alternates: { canonical: canonicalUrl },
-    ...(ogImage
-      ? {
-          openGraph: {
-            type: 'website',
-            url: canonicalUrl,
-            title: pageSeo.fullTitle,
-            description: pageSeo.description,
-            siteName: getSiteName(artistName),
+    appleWebApp: {
+      title: siteName,
+      statusBarStyle: 'black-translucent',
+      capable: true,
+    },
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      title: pageSeo.documentTitle,
+      description: pageSeo.description,
+      siteName,
+      ...(ogImage
+        ? {
             images: [
               {
                 url: ogImage,
                 width: 1920,
                 height: 1080,
-                alt: getSiteName(artistName),
+                alt: siteName,
               },
             ],
-          },
-          twitter: {
-            card: 'summary_large_image',
-            title: pageSeo.fullTitle,
-            description: pageSeo.description,
-            images: [ogImage],
-          },
-        }
-      : {}),
+          }
+        : {}),
+    },
   };
 }
 

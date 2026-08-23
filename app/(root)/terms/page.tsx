@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { requireArtist } from '@/lib/artist';
 import { createPageMetadata } from '@/lib/site-metadata';
 import { getOrgInfo, PRINTIFY_HELP_URL } from '@/lib/org-info';
 
-export const metadata: Metadata = createPageMetadata(
-  'Terms & Conditions',
-  'Terms for purchasing merchandise on this artist shop.',
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const artist = await requireArtist();
+  return createPageMetadata(
+    'Terms & Conditions',
+    `Terms and conditions for merchandise purchases from ${artist.name}.`,
+  );
+}
 
 export default function TermsPage() {
   const org = getOrgInfo();

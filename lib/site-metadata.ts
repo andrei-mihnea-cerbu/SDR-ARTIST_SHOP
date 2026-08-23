@@ -40,6 +40,16 @@ export function getTitleTemplate(artistName?: string) {
   return `%s | ${getSiteName(artistName)}`;
 }
 
+export function stripHtml(value?: string) {
+  if (!value) return '';
+  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export function truncateMeta(value: string, max = 160) {
+  if (value.length <= max) return value;
+  return `${value.slice(0, max - 1).trimEnd()}…`;
+}
+
 export function getPageDescription(artistName?: string) {
   const name = artistName ?? getArtistNameFallback();
   return `Official merchandise shop of ${name}.`;
@@ -81,9 +91,11 @@ export function getPageSeo(pathname: string, artistName?: string) {
 export function createPageMetadata(
   pageTitle: string,
   description?: string,
+  options?: { robots?: Metadata['robots'] },
 ): Metadata {
   return {
     title: pageTitle,
-    description: description ?? getPageDescription(),
+    ...(description ? { description } : {}),
+    ...(options?.robots ? { robots: options.robots } : {}),
   };
 }
