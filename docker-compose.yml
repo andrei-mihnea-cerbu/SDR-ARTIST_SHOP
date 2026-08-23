@@ -1,7 +1,7 @@
 services:
   shop:
     build: .
-    container_name: smokindudesrecords-shop
+    container_name: smokindudesrecords-artist-shop
     restart: unless-stopped
     env_file:
       - .env.local
