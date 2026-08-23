@@ -49,3 +49,12 @@ export interface PrintifyProduct {
   artistName?: string;
   artistWebsite?: string;
 }
+
+export interface Announcement {
+  id: string;
+  title: string;
+  body: string;
+  link?: string;
+  isActive: boolean;
+  createdAt?: string;
+}

@@ -3,6 +3,7 @@
 import { createContext, useContext, useMemo } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import AnnouncementModal from '@/components/AnnouncementModal';
 import type { Artist } from '@/types';
 
 type ArtistContextValue = {
@@ -37,6 +38,7 @@ export default function ShopChrome({
         <main className="site-main flex-1">{children}</main>
         <Footer artistName={artist.name} artistHomeUrl={artistHomeUrl} />
       </div>
+      <AnnouncementModal />
     </ArtistContext.Provider>
   );
 }
