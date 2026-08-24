@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.amc-dev.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.your-storagebox.de',
+        pathname: '/**',
+      },
       { protocol: 'https', hostname: 'api.smokindudesrecords.com' },
       { protocol: 'https', hostname: 'images-api.printify.com' },
       { protocol: 'https', hostname: 'images.printify.com' },
