@@ -12,6 +12,7 @@ export default async function proxy(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
+    pathname === '/health' ||
     pathname.includes('.')
   ) {
     return NextResponse.next();

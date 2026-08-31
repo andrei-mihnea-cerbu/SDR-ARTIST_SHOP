@@ -32,7 +32,12 @@ export function parseHostname(value: string): ParsedHostname {
 }
 
 export function isLocalHostname(hostname: string): boolean {
-  return hostname === 'localhost' || hostname.endsWith('.localhost');
+  return (
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1' ||
+    hostname.endsWith('.localhost')
+  );
 }
 
 export function getLocalArtistOrigin() {

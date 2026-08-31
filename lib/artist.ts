@@ -4,6 +4,7 @@ import {
   PUBLIC_API_URL,
   getArtistNameFallback,
   getRequestHostname,
+  isLocalHostname,
   normalizeHostname,
 } from '@/lib/config';
 import { toCdnDisplayUrl, type CdnPreset } from '@/lib/cdn';
@@ -25,7 +26,7 @@ function normalizeArtist(data: Artist | Artist[] | null): Artist | null {
 
 export async function getArtistByWebsite(website?: string) {
   const domain = normalizeHostname(website ?? (await getRequestHostname()));
-  if (!domain || domain === 'localhost') return null;
+  if (!domain || isLocalHostname(domain)) return null;
 
   const data = await serverApiGet<Artist | Artist[]>('/artists', {
     website: domain,
