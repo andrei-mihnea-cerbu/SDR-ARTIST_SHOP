@@ -1,4 +1,3 @@
-/** ISO 3166-1 alpha-2 country codes (Printify / shipping). */
 export const COUNTRY_CODES = [
   'AF', 'AX', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW',
   'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT',
@@ -33,7 +32,6 @@ function isCountryCode(value: string): value is CountryCode {
   return (COUNTRY_CODES as readonly string[]).includes(value);
 }
 
-/** Detect likely shipping country from the browser locale. */
 export function detectBrowserCountryCode(fallback = 'US'): string {
   if (typeof navigator === 'undefined') return fallback;
 
@@ -51,7 +49,7 @@ export function detectBrowserCountryCode(fallback = 'US'): string {
           return region.toUpperCase();
         }
       } catch {
-        // ignore invalid locale tags
+
       }
 
       const match = tag.match(/[-_]([A-Za-z]{2})$/);
@@ -61,7 +59,7 @@ export function detectBrowserCountryCode(fallback = 'US'): string {
       }
     }
   } catch {
-    // ignore
+
   }
 
   return fallback;

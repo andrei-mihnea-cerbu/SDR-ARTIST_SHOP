@@ -4,38 +4,40 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
-  npm ci
+  npm ci --prefer-offline --no-audit --no-progress
 
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env.local .env.local
-ENV NEXT_TELEMETRY_DISABLED=1
+RUN mkdir -p public
+ENV NEXT_TELEMETRY_DISABLED=1 \
+  NODE_ENV=production
 RUN --mount=type=cache,target=/app/.next/cache \
   npm run build
 
-FROM node:20-bookworm-slim AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
+
+RUN apk add --no-cache tini tzdata wget \
+  && addgroup -S -g 1001 nodejs \
+  && adduser -S -u 1001 -G nodejs nextjs
 
 ENV NODE_ENV=production \
   NEXT_TELEMETRY_DISABLED=1 \
   PORT=3000 \
-  HOSTNAME=0.0.0.0
+  HOSTNAME=0.0.0.0 \
+  TZ=Europe/Bucharest
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates curl wget \
-  && update-ca-certificates \
-  && groupadd --system --gid 1001 nodejs \
-  && useradd --system --uid 1001 --gid nodejs nextjs
-
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 EXPOSE 3000
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1
+
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "server.js"]

@@ -7,16 +7,12 @@ export const PUBLIC_API_URL =
 export const MAIN_SITE_URL = 'https://smokindudesrecords.com';
 
 export type ParsedHostname = {
-  /** Apex host used for artist lookup (no www / shop). */
+
   hostname: string;
-  /** True when the request came from shop.{artist-domain}. */
+
   isShopHost: boolean;
 };
 
-/**
- * Normalize a host for artist resolution.
- * Strips protocol, port, path, leading www., and leading shop. (shop.artist.com → artist.com).
- */
 export function parseHostname(value: string): ParsedHostname {
   let host = value
     .trim()

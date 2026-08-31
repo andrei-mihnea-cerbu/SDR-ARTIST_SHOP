@@ -12,7 +12,7 @@ import {
   getTitleTemplate,
 } from '@/lib/site-metadata';
 import { getWebsiteUrl } from '@/lib/config';
-import { getArtistByWebsite, getArtistPhotoUrl } from '@/lib/artist';
+import { getArtistByWebsite, getArtistDisplayPhotoUrl } from '@/lib/artist';
 
 export async function generateViewport(): Promise<Viewport> {
   return { themeColor: getThemeColor(), width: 'device-width', initialScale: 1 };
@@ -26,8 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const artistName = artist?.name;
   const pageSeo = getPageSeo(pathname, artistName);
   const siteName = getSiteName(artistName);
-  const ogImage = artist?.id
-    ? getArtistPhotoUrl(artist.id, 'banner')
+  const ogImage = artist
+    ? getArtistDisplayPhotoUrl(artist, 'banner', 'poster')
     : undefined;
   const canonicalUrl = formatCanonicalUrl(pathname, websiteUrl);
 

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'storage.amc-dev.com',
+        hostname: 'cdn.amc-dev.com',
         pathname: '/**',
       },
       { protocol: 'https', hostname: 'api.smokindudesrecords.com' },

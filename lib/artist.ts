@@ -6,10 +6,17 @@ import {
   getRequestHostname,
   normalizeHostname,
 } from '@/lib/config';
+import { toCdnDisplayUrl, type CdnPreset } from '@/lib/cdn';
 import { serverApiGet } from '@/lib/server-api';
 import type { Artist } from '@/types';
 
 export type ArtistPhotoType = 'avatar' | 'banner' | 'favicon';
+
+const DISPLAY_PRESET: Record<ArtistPhotoType, CdnPreset> = {
+  avatar: 'card',
+  banner: 'poster',
+  favicon: 'thumb',
+};
 
 function normalizeArtist(data: Artist | Artist[] | null): Artist | null {
   if (!data) return null;
@@ -52,4 +59,34 @@ export function getArtistPhotoFetchUrl(
   type: ArtistPhotoType = 'banner',
 ) {
   return `${API_BASE_URL}/artists/${artistId}/photo?type=${type}`;
+}
+
+function cdnField(artist: Artist, type: ArtistPhotoType): string | undefined {
+  if (type === 'avatar') return artist.avatarUrl;
+  if (type === 'banner') return artist.bannerUrl;
+  return artist.faviconUrl;
+}
+
+function hasPhoto(artist: Artist, type: ArtistPhotoType): boolean {
+  if (type === 'avatar') return Boolean(artist.hasAvatar);
+  if (type === 'banner') return Boolean(artist.hasBanner);
+  return Boolean(artist.hasFavicon);
+}
+
+export function getArtistDisplayPhotoUrl(
+  artist: Artist,
+  type: ArtistPhotoType = 'banner',
+  preset: CdnPreset = DISPLAY_PRESET[type],
+): string | null {
+  const cdn = cdnField(artist, type)?.trim();
+  if (cdn) return toCdnDisplayUrl(cdn, preset);
+  if (!hasPhoto(artist, type) || !artist.id) return null;
+  return getArtistPhotoUrl(artist.id, type);
+}
+
+export function getArtistIconFetchUrl(artist: Artist): string | null {
+  const cdn = artist.faviconUrl?.trim();
+  if (cdn) return toCdnDisplayUrl(cdn, 'thumb');
+  if (!artist.hasFavicon || !artist.id) return null;
+  return getArtistPhotoFetchUrl(artist.id, 'favicon');
 }

@@ -13,6 +13,9 @@ export interface Artist {
   hasAvatar?: boolean;
   hasBanner?: boolean;
   hasFavicon?: boolean;
+  avatarUrl?: string;
+  bannerUrl?: string;
+  faviconUrl?: string;
 }
 
 export interface PrintifyProductVariant {
