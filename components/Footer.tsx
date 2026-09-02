@@ -40,6 +40,14 @@ export default function Footer({
         <p className="text-xs tracking-wide text-artist-cream-muted">
           © {new Date().getFullYear()} {artistName}. All rights reserved.
         </p>
+        <a
+          href="https://estionline.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs tracking-wide text-artist-cream-muted transition hover:text-artist-amber"
+        >
+          Powered by Esti Online
+        </a>
       </div>
     </footer>
   );
