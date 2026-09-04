@@ -10,10 +10,10 @@ export type MerchCartItem = {
   artistName?: string;
 };
 
-const STORAGE_KEY = 'sdr-merch-cart';
+const STORAGE_KEY = "sdr-merch-cart";
 
 function readCart(): MerchCartItem[] {
-  if (typeof window === 'undefined') return [];
+  if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
@@ -26,7 +26,7 @@ function readCart(): MerchCartItem[] {
 
 function writeCart(items: MerchCartItem[]) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  window.dispatchEvent(new Event('sdr-merch-cart'));
+  window.dispatchEvent(new Event("sdr-merch-cart"));
 }
 
 export function getMerchCart(): MerchCartItem[] {
@@ -72,8 +72,7 @@ export function updateMerchCartQuantity(
 export function removeMerchCartItem(productId: string, variantId: number) {
   writeCart(
     readCart().filter(
-      (item) =>
-        !(item.productId === productId && item.variantId === variantId),
+      (item) => !(item.productId === productId && item.variantId === variantId),
     ),
   );
 }
@@ -82,9 +81,9 @@ export function clearMerchCart() {
   writeCart([]);
 }
 
-export function formatMerchMoney(cents: number, currency = 'USD') {
+export function formatMerchMoney(cents: number, currency = "USD") {
   return new Intl.NumberFormat(undefined, {
-    style: 'currency',
+    style: "currency",
     currency: currency.toUpperCase(),
   }).format(cents / 100);
 }

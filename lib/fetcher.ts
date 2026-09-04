@@ -1,19 +1,19 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL } from "@/lib/config";
 
 export type ApiResponse<T> = { data: T | null; status: number };
 
 function prepareHeaders(options: RequestInit): Headers {
   const headers = new Headers(options.headers || {});
-  if (options.body && !headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
+  if (options.body && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
   }
-  if (!headers.has('Accept')) headers.set('Accept', 'application/json');
+  if (!headers.has("Accept")) headers.set("Accept", "application/json");
   return headers;
 }
 
 function resolveUrl(url: string): string {
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  const normalized = url.startsWith('/') ? url : `/${url}`;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  const normalized = url.startsWith("/") ? url : `/${url}`;
   return `${API_BASE_URL}${normalized}`;
 }
 
@@ -21,7 +21,7 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
   return fetch(resolveUrl(url), {
     ...options,
     headers: prepareHeaders(options),
-    cache: 'no-store',
+    cache: "no-store",
   });
 }
 

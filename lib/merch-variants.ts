@@ -1,4 +1,4 @@
-import type { PrintifyProduct, PrintifyProductOption } from '@/types';
+import type { PrintifyProduct, PrintifyProductOption } from "@/types";
 
 export type MerchColor = {
   key: string;
@@ -14,19 +14,19 @@ export type MerchSize = {
 };
 
 const SIZE_RANK = [
-  'xxs',
-  'xs',
-  's',
-  'm',
-  'l',
-  'xl',
-  '2xl',
-  'xxl',
-  '3xl',
-  'xxxl',
-  '4xl',
-  '5xl',
-  '6xl',
+  "xxs",
+  "xs",
+  "s",
+  "m",
+  "l",
+  "xl",
+  "2xl",
+  "xxl",
+  "3xl",
+  "xxxl",
+  "4xl",
+  "5xl",
+  "6xl",
 ];
 
 function optionByType(
@@ -34,26 +34,26 @@ function optionByType(
   type: string,
 ): PrintifyProductOption | undefined {
   return (options ?? []).find(
-    (option) => (option.type ?? '').toLowerCase() === type,
+    (option) => (option.type ?? "").toLowerCase() === type,
   );
 }
 
 function parseTitleParts(title: string): { color: string; size: string } {
   const parts = title
-    .split('/')
+    .split("/")
     .map((part) => part.trim())
     .filter(Boolean);
   if (parts.length >= 2) {
     return {
-      color: parts.slice(0, -1).join(' / '),
+      color: parts.slice(0, -1).join(" / "),
       size: parts[parts.length - 1],
     };
   }
-  return { color: title.trim() || 'Default', size: '' };
+  return { color: title.trim() || "Default", size: "" };
 }
 
 function sizeRank(title: string): number {
-  const key = title.trim().toLowerCase().replace(/\s+/g, '');
+  const key = title.trim().toLowerCase().replace(/\s+/g, "");
   const index = SIZE_RANK.indexOf(key);
   return index === -1 ? 1000 + title.length : index;
 }
@@ -65,8 +65,8 @@ export function groupMerchVariants(product: PrintifyProduct): {
   const enabled = (product.variants ?? []).filter(
     (variant) => variant.is_enabled !== false,
   );
-  const colorOption = optionByType(product.options, 'color');
-  const sizeOption = optionByType(product.options, 'size');
+  const colorOption = optionByType(product.options, "color");
+  const sizeOption = optionByType(product.options, "size");
 
   const colors = new Map<string, MerchColor>();
   const sizes = new Map<string, MerchSize>();
@@ -78,10 +78,10 @@ export function groupMerchVariants(product: PrintifyProduct): {
     const sizeValue = sizeOption?.values?.find((value) =>
       variant.options?.includes(value.id),
     );
-    const parsed = parseTitleParts(variant.title ?? '');
+    const parsed = parseTitleParts(variant.title ?? "");
 
-    const colorTitle = colorValue?.title || parsed.color || 'Default';
-    const sizeTitle = sizeValue?.title || parsed.size || 'One size';
+    const colorTitle = colorValue?.title || parsed.color || "Default";
+    const sizeTitle = sizeValue?.title || parsed.size || "One size";
     const colorKey = String(colorValue?.id ?? colorTitle.toLowerCase());
     const sizeKey = String(sizeValue?.id ?? sizeTitle.toLowerCase());
 

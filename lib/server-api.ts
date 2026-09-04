@@ -1,5 +1,5 @@
-import { withQuery } from '@/lib/api-query';
-import { apiFetchJson } from '@/lib/fetcher';
+import { withQuery } from "@/lib/api-query";
+import { apiFetchJson } from "@/lib/fetcher";
 
 export async function serverApiGet<T>(
   path: string,

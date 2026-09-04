@@ -1,34 +1,34 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
-import { clientApiPost } from '@/lib/client-api';
-import { clearMerchCart } from '@/lib/merch-cart';
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { clientApiPost } from "@/lib/client-api";
+import { clearMerchCart } from "@/lib/merch-cart";
 
 function MerchSuccessInner() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
-  const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading');
+  const sessionId = searchParams.get("session_id");
+  const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
 
   useEffect(() => {
     if (!sessionId) {
-      setStatus('error');
+      setStatus("error");
       return;
     }
 
     let mounted = true;
     (async () => {
       const { status: httpStatus } = await clientApiPost(
-        '/printify/checkout/complete',
+        "/printify/checkout/complete",
         { sessionId },
       );
       if (!mounted) return;
       if (httpStatus < 400) {
         clearMerchCart();
-        setStatus('ok');
+        setStatus("ok");
       } else {
-        setStatus('error');
+        setStatus("error");
       }
     })();
 
@@ -39,9 +39,9 @@ function MerchSuccessInner() {
 
   return (
     <div className="mx-auto w-[92%] max-w-xl py-24 text-center">
-      {status === 'loading' ? (
+      {status === "loading" ? (
         <p className="text-artist-cream-muted">Confirming your order…</p>
-      ) : status === 'ok' ? (
+      ) : status === "ok" ? (
         <>
           <h1 className="font-display text-3xl text-artist-cream">
             Order confirmed

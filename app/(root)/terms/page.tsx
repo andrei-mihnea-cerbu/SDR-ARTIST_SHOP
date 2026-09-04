@@ -1,20 +1,20 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { requireArtist } from '@/lib/artist';
-import { createPageMetadata } from '@/lib/site-metadata';
-import { getOrgInfo, PRINTIFY_HELP_URL } from '@/lib/org-info';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { requireArtist } from "@/lib/artist";
+import { createPageMetadata } from "@/lib/site-metadata";
+import { getOrgInfo, PRINTIFY_HELP_URL } from "@/lib/org-info";
 
 export async function generateMetadata(): Promise<Metadata> {
   const artist = await requireArtist();
   return createPageMetadata(
-    'Terms & Conditions',
+    "Terms & Conditions",
     `Terms and conditions for merchandise purchases from ${artist.name}.`,
   );
 }
 
 export default function TermsPage() {
   const org = getOrgInfo();
-  const websiteHost = org.website.replace(/^https?:\/\//, '');
+  const websiteHost = org.website.replace(/^https?:\/\//, "");
 
   return (
     <section className="mx-auto w-[92%] max-w-3xl py-12 md:py-16">
@@ -34,24 +34,25 @@ export default function TermsPage() {
             1. Seller information
           </h2>
           <p className="mt-3">
-            Merchandise sold through this artist shop is offered by{' '}
-            <strong className="text-artist-cream">{org.name}</strong>
-            {' '}
+            Merchandise sold through this artist shop is offered by{" "}
+            <strong className="text-artist-cream">{org.name}</strong>{" "}
             (&quot;we&quot;, &quot;us&quot;, the &quot;Studio&quot;).
           </p>
           <ul className="mt-4 space-y-1.5">
             <li>
-              <span className="text-artist-cream/80">Tax ID (CUI):</span> {org.cui}
+              <span className="text-artist-cream/80">Tax ID (CUI):</span>{" "}
+              {org.cui}
             </li>
             <li>
-              <span className="text-artist-cream/80">Trade Register:</span>{' '}
+              <span className="text-artist-cream/80">Trade Register:</span>{" "}
               {org.reg}
             </li>
             <li>
-              <span className="text-artist-cream/80">Address:</span> {org.address}
+              <span className="text-artist-cream/80">Address:</span>{" "}
+              {org.address}
             </li>
             <li>
-              <span className="text-artist-cream/80">Email:</span>{' '}
+              <span className="text-artist-cream/80">Email:</span>{" "}
               <a
                 href={`mailto:${org.email}`}
                 className="text-artist-amber hover:underline"
@@ -63,7 +64,7 @@ export default function TermsPage() {
               <span className="text-artist-cream/80">Phone:</span> {org.phone}
             </li>
             <li>
-              <span className="text-artist-cream/80">Label website:</span>{' '}
+              <span className="text-artist-cream/80">Label website:</span>{" "}
               <a
                 href={org.website}
                 target="_blank"
@@ -81,9 +82,9 @@ export default function TermsPage() {
             2. Production & fulfillment (Printify)
           </h2>
           <p className="mt-3">
-            All merchandise products are produced, packed, and shipped by{' '}
-            <strong className="text-artist-cream">Printify</strong> and its print
-            providers. Printify handles manufacturing, quality of print
+            All merchandise products are produced, packed, and shipped by{" "}
+            <strong className="text-artist-cream">Printify</strong> and its
+            print providers. Printify handles manufacturing, quality of print
             production, shipping, tracking, and delivery-related operations.
           </p>
           <p className="mt-3">
@@ -140,10 +141,10 @@ export default function TermsPage() {
             6. Acceptance
           </h2>
           <p className="mt-3">
-            By checking the acceptance box at checkout and completing a purchase,
-            you confirm that you have read and agree to these Terms & Conditions,
-            including the no-refund policy and Printify&apos;s role in production
-            and shipping.
+            By checking the acceptance box at checkout and completing a
+            purchase, you confirm that you have read and agree to these Terms &
+            Conditions, including the no-refund policy and Printify&apos;s role
+            in production and shipping.
           </p>
         </section>
 

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useMemo } from 'react';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-import AnnouncementModal from '@/components/AnnouncementModal';
-import type { Artist } from '@/types';
+import { createContext, useContext, useMemo } from "react";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import AnnouncementModal from "@/components/AnnouncementModal";
+import type { Artist } from "@/types";
 
 type ArtistContextValue = {
   artist: Artist;
@@ -15,7 +15,7 @@ const ArtistContext = createContext<ArtistContextValue | null>(null);
 export function useArtistContext() {
   const context = useContext(ArtistContext);
   if (!context) {
-    throw new Error('useArtistContext must be used within ShopChrome');
+    throw new Error("useArtistContext must be used within ShopChrome");
   }
   return context;
 }

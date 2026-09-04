@@ -1,19 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import { toast } from 'sonner';
-import { useArtistContext } from '@/components/ArtistChrome';
-import { clientApiPost } from '@/lib/client-api';
-import {
-  detectBrowserCountryCode,
-  getCountryOptions,
-} from '@/lib/countries';
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { useArtistContext } from "@/components/ArtistChrome";
+import { clientApiPost } from "@/lib/client-api";
+import { detectBrowserCountryCode, getCountryOptions } from "@/lib/countries";
 import {
   formatMerchMoney,
   getMerchCart,
   type MerchCartItem,
-} from '@/lib/merch-cart';
+} from "@/lib/merch-cart";
 
 type AddressForm = {
   first_name: string;
@@ -29,34 +26,34 @@ type AddressForm = {
 };
 
 const emptyAddress: AddressForm = {
-  first_name: '',
-  last_name: '',
-  email: '',
-  phone: '',
-  country: '',
-  region: '',
-  address1: '',
-  address2: '',
-  city: '',
-  zip: '',
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  country: "",
+  region: "",
+  address1: "",
+  address2: "",
+  city: "",
+  zip: "",
 };
 
 export default function CheckoutPage() {
   const { artist } = useArtistContext();
   const [items, setItems] = useState<MerchCartItem[]>([]);
   const [address, setAddress] = useState<AddressForm>(emptyAddress);
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCode] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const countries = useMemo(() => getCountryOptions('en'), []);
+  const countries = useMemo(() => getCountryOptions("en"), []);
 
   useEffect(() => {
     setItems(getMerchCart());
     setAddress((prev) =>
       prev.country
         ? prev
-        : { ...prev, country: detectBrowserCountryCode('US') },
+        : { ...prev, country: detectBrowserCountryCode("US") },
     );
   }, []);
 
@@ -71,28 +68,28 @@ export default function CheckoutPage() {
 
   const handlePay = async () => {
     if (!items.length) {
-      toast.error('Cart is empty');
+      toast.error("Cart is empty");
       return;
     }
 
     const required: (keyof AddressForm)[] = [
-      'first_name',
-      'last_name',
-      'email',
-      'country',
-      'address1',
-      'city',
-      'zip',
+      "first_name",
+      "last_name",
+      "email",
+      "country",
+      "address1",
+      "city",
+      "zip",
     ];
     for (const key of required) {
       if (!address[key].trim()) {
-        toast.error('Please fill in all required address fields');
+        toast.error("Please fill in all required address fields");
         return;
       }
     }
 
     if (!acceptedTerms) {
-      toast.error('Please accept the Terms & Conditions to continue');
+      toast.error("Please accept the Terms & Conditions to continue");
       return;
     }
 
@@ -100,7 +97,7 @@ export default function CheckoutPage() {
     try {
       const origin = window.location.origin;
       const { data, status } = await clientApiPost<{ url: string }>(
-        '/printify/checkout',
+        "/printify/checkout",
         {
           items: items.map((item) => ({
             productId: item.productId,
@@ -124,15 +121,15 @@ export default function CheckoutPage() {
       if (status >= 400 || !data?.url) {
         toast.error(
           status === 400
-            ? 'Invalid coupon or checkout details'
-            : 'Could not start checkout',
+            ? "Invalid coupon or checkout details"
+            : "Could not start checkout",
         );
         return;
       }
 
       window.location.href = data.url;
     } catch {
-      toast.error('Could not start checkout');
+      toast.error("Could not start checkout");
     } finally {
       setSubmitting(false);
     }
@@ -161,21 +158,21 @@ export default function CheckoutPage() {
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
           {(
             [
-              ['first_name', 'First name'],
-              ['last_name', 'Last name'],
-              ['email', 'Email'],
-              ['phone', 'Phone (optional)'],
-              ['region', 'Region / State (optional)'],
-              ['address1', 'Address'],
-              ['address2', 'Address line 2 (optional)'],
-              ['city', 'City'],
-              ['zip', 'ZIP / Postal code'],
+              ["first_name", "First name"],
+              ["last_name", "Last name"],
+              ["email", "Email"],
+              ["phone", "Phone (optional)"],
+              ["region", "Region / State (optional)"],
+              ["address1", "Address"],
+              ["address2", "Address line 2 (optional)"],
+              ["city", "City"],
+              ["zip", "ZIP / Postal code"],
             ] as const
           ).map(([key, label]) => (
             <label
               key={key}
               className={`text-sm text-artist-cream-muted ${
-                key === 'address1' || key === 'address2' ? 'sm:col-span-2' : ''
+                key === "address1" || key === "address2" ? "sm:col-span-2" : ""
               }`}
             >
               {label}
@@ -191,7 +188,7 @@ export default function CheckoutPage() {
             Country
             <select
               value={address.country}
-              onChange={(e) => setField('country', e.target.value)}
+              onChange={(e) => setField("country", e.target.value)}
               className="mt-1.5 w-full rounded-xl border border-artist-cream/15 bg-artist-gray-900 px-4 py-3 text-artist-cream outline-none transition focus:border-artist-amber/50"
             >
               <option value="" disabled>
@@ -256,7 +253,7 @@ export default function CheckoutPage() {
             className="mt-1 h-4 w-4 shrink-0 rounded border-artist-cream/30 accent-artist-amber"
           />
           <span>
-            I have read and agree to the{' '}
+            I have read and agree to the{" "}
             <Link
               href="/terms"
               target="_blank"
@@ -274,7 +271,7 @@ export default function CheckoutPage() {
           onClick={() => void handlePay()}
           className="btn-primary mt-6 w-full py-3 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {submitting ? 'Redirecting…' : 'Pay with Stripe'}
+          {submitting ? "Redirecting…" : "Pay with Stripe"}
         </button>
         <Link
           href="/cart"

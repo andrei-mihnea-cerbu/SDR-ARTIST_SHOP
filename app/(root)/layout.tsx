@@ -1,7 +1,7 @@
-import ShopChrome from '@/components/ArtistChrome';
-import SiteNotFound from '@/components/SiteNotFound';
-import { getArtistByWebsite } from '@/lib/artist';
-import { artistSiteUrl, getRequestHostname } from '@/lib/config';
+import ShopChrome from "@/components/ArtistChrome";
+import SiteNotFound from "@/components/SiteNotFound";
+import { getArtistByWebsite } from "@/lib/artist";
+import { artistSiteUrl, getRequestHostname } from "@/lib/config";
 
 export default async function ShopGroupLayout({
   children,

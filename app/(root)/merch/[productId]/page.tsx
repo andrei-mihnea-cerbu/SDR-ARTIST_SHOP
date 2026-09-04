@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
-import MerchProductPage from '@/components/MerchProductPage';
-import { requireArtist } from '@/lib/artist';
-import { serverApiGet } from '@/lib/server-api';
+import type { Metadata } from "next";
+import MerchProductPage from "@/components/MerchProductPage";
+import { requireArtist } from "@/lib/artist";
+import { serverApiGet } from "@/lib/server-api";
 import {
   createPageMetadata,
   getPageDescription,
   getSiteName,
   stripHtml,
   truncateMeta,
-} from '@/lib/site-metadata';
-import type { PrintifyProduct } from '@/types';
+} from "@/lib/site-metadata";
+import type { PrintifyProduct } from "@/types";
 
 type ProductPageProps = {
   params: Promise<{ productId: string }>;
@@ -21,7 +21,7 @@ export async function generateMetadata({
   const { productId } = await params;
   const artist = await requireArtist();
   const fallback = createPageMetadata(
-    'Product',
+    "Product",
     getPageDescription(artist.name),
   );
 
@@ -45,7 +45,7 @@ export async function generateMetadata({
       description,
       alternates: { canonical: `/merch/${productId}` },
       openGraph: {
-        type: 'website',
+        type: "website",
         title: product.title,
         description,
         siteName: getSiteName(artist.name),

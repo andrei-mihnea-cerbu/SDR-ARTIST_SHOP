@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { Home, RotateCcw } from 'lucide-react';
+import { useEffect } from "react";
+import Link from "next/link";
+import { Home, RotateCcw } from "lucide-react";
 
 export default function Error({
   error,
@@ -12,7 +12,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('Global error:', error);
+    console.error("Global error:", error);
   }, [error]);
 
   return (
@@ -23,7 +23,8 @@ export default function Error({
           Something went wrong
         </p>
         <p className="mt-4 mb-10 max-w-md text-sm leading-relaxed text-artist-cream-muted sm:text-base">
-          We hit an unexpected issue. Please try again, or return to the homepage.
+          We hit an unexpected issue. Please try again, or return to the
+          homepage.
         </p>
         <div className="flex w-full max-w-xs flex-col gap-3">
           <button type="button" onClick={() => reset()} className="btn-primary">

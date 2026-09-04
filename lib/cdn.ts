@@ -1,11 +1,11 @@
-export type CdnPreset = 'thumb' | 'card' | 'poster';
+export type CdnPreset = "thumb" | "card" | "poster";
 
-const CDN_ORIGIN = 'https://cdn.amc-dev.com';
+const CDN_ORIGIN = "https://cdn.amc-dev.com";
 
 function pathnameOf(url: string): string | null {
   try {
-    if (url.includes('://')) return new URL(url).pathname;
-    return url.startsWith('/') ? url : `/${url}`;
+    if (url.includes("://")) return new URL(url).pathname;
+    return url.startsWith("/") ? url : `/${url}`;
   } catch {
     return null;
   }
@@ -13,34 +13,38 @@ function pathnameOf(url: string): string | null {
 
 function versionQuery(url: string): string {
   try {
-    const parsed = url.includes('://')
+    const parsed = url.includes("://")
       ? new URL(url)
-      : new URL(url, 'https://cdn.amc-dev.com');
-    const value = parsed.searchParams.get('v');
-    if (!value) return '';
+      : new URL(url, "https://cdn.amc-dev.com");
+    const value = parsed.searchParams.get("v");
+    if (!value) return "";
     return `?v=${encodeURIComponent(value)}`;
   } catch {
-    return '';
+    return "";
   }
 }
 
 export function toCdnDisplayUrl(
   url: string,
-  preset: CdnPreset = 'thumb',
+  preset: CdnPreset = "thumb",
 ): string {
-  const trimmed = (url || '').trim();
+  const trimmed = (url || "").trim();
   if (!trimmed) return trimmed;
   if (
-    trimmed.startsWith('/') &&
-    !trimmed.startsWith('//') &&
-    !trimmed.startsWith('/t/')
+    trimmed.startsWith("/") &&
+    !trimmed.startsWith("//") &&
+    !trimmed.startsWith("/t/")
   ) {
     return trimmed;
   }
 
   const pathname = pathnameOf(trimmed);
   if (!pathname) return trimmed;
-  if (/\.(mp3|wav|flac|aac|ogg|m4a|mp4|mov|webm|m4v|mkv|pdf)(\?|$)/i.test(pathname)) {
+  if (
+    /\.(mp3|wav|flac|aac|ogg|m4a|mp4|mov|webm|m4v|mkv|pdf)(\?|$)/i.test(
+      pathname,
+    )
+  ) {
     return trimmed;
   }
 

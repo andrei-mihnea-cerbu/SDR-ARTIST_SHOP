@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import { createPageMetadata } from '@/lib/site-metadata';
+import type { ReactNode } from "react";
+import { createPageMetadata } from "@/lib/site-metadata";
 
-export const metadata = createPageMetadata('Checkout', undefined, {
+export const metadata = createPageMetadata("Checkout", undefined, {
   robots: { index: false, follow: false },
 });
 

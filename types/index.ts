@@ -1,6 +1,6 @@
-export type ArtistType = 'solo' | 'group' | string;
+export type ArtistType = "solo" | "group" | string;
 
-export type ArtistPhotoType = 'avatar' | 'banner' | 'favicon';
+export type ArtistPhotoType = "avatar" | "banner" | "favicon";
 
 export interface Artist {
   id: string;

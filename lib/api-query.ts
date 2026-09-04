@@ -2,7 +2,7 @@ export function withQuery(
   path: string,
   params?: Record<string, string | number | boolean | undefined | null>,
 ) {
-  const normalized = path.startsWith('/') ? path : `/${path}`;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
   if (!params) return normalized;
 
   const search = new URLSearchParams();

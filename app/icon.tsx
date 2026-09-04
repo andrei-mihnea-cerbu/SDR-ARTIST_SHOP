@@ -1,13 +1,13 @@
-import { ImageResponse } from 'next/og';
-import { ArtistFaviconImage } from '@/lib/favicon-image';
-import { getArtistByWebsite, getArtistIconFetchUrl } from '@/lib/artist';
+import { ImageResponse } from "next/og";
+import { ArtistFaviconImage } from "@/lib/favicon-image";
+import { getArtistByWebsite, getArtistIconFetchUrl } from "@/lib/artist";
 
 export const size = {
   width: 32,
   height: 32,
 };
 
-export const contentType = 'image/png';
+export const contentType = "image/png";
 
 export default async function Icon() {
   const artist = await getArtistByWebsite();
@@ -22,8 +22,8 @@ export default async function Icon() {
       const buffer = await response.arrayBuffer();
       return new Response(buffer, {
         headers: {
-          'Content-Type': response.headers.get('Content-Type') ?? 'image/webp',
-          'Cache-Control': 'public, max-age=86400',
+          "Content-Type": response.headers.get("Content-Type") ?? "image/webp",
+          "Cache-Control": "public, max-age=86400",
         },
       });
     }

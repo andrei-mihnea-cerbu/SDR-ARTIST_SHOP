@@ -1,5 +1,5 @@
-import { withQuery } from '@/lib/api-query';
-import { apiFetchJson } from '@/lib/fetcher';
+import { withQuery } from "@/lib/api-query";
+import { apiFetchJson } from "@/lib/fetcher";
 
 export async function clientApiGet<T>(
   path: string,
@@ -12,7 +12,7 @@ export async function clientApiGet<T>(
 
 export async function clientApiPost<T>(path: string, body?: unknown) {
   return apiFetchJson<T>(path, {
-    method: 'POST',
+    method: "POST",
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 }

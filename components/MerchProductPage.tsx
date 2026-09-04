@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { toast } from 'sonner';
-import { useArtistContext } from '@/components/ArtistChrome';
-import MerchImageGallery from '@/components/MerchImageGallery';
-import { clientApiGet } from '@/lib/client-api';
-import { addMerchCartItem, formatMerchMoney } from '@/lib/merch-cart';
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { useArtistContext } from "@/components/ArtistChrome";
+import MerchImageGallery from "@/components/MerchImageGallery";
+import { clientApiGet } from "@/lib/client-api";
+import { addMerchCartItem, formatMerchMoney } from "@/lib/merch-cart";
 import {
   groupMerchVariants,
   imagesForColor,
   sizesForColor,
   variantIdForSelection,
-} from '@/lib/merch-variants';
-import type { PrintifyProduct } from '@/types';
+} from "@/lib/merch-variants";
+import type { PrintifyProduct } from "@/types";
 
 function ColorSwatch({
   colors,
@@ -30,8 +30,8 @@ function ColorSwatch({
     <span
       className={`flex h-8 w-8 overflow-hidden rounded-full border ${
         selected
-          ? 'border-artist-amber ring-2 ring-artist-amber/40'
-          : 'border-artist-cream/25'
+          ? "border-artist-amber ring-2 ring-artist-amber/40"
+          : "border-artist-cream/25"
       }`}
       title={title}
     >
@@ -49,7 +49,7 @@ function ColorSwatch({
       ) : (
         <span
           className="h-full w-full"
-          style={{ backgroundColor: colors[0] || '#9a8b7a' }}
+          style={{ backgroundColor: colors[0] || "#9a8b7a" }}
         />
       )}
     </span>
@@ -58,13 +58,13 @@ function ColorSwatch({
 
 export default function MerchProductPage() {
   const params = useParams<{ productId: string }>();
-  const productId = String(params?.productId ?? '');
+  const productId = String(params?.productId ?? "");
   const { artist } = useArtistContext();
 
   const [product, setProduct] = useState<PrintifyProduct | null>(null);
   const [related, setRelated] = useState<PrintifyProduct[]>([]);
-  const [colorKey, setColorKey] = useState('');
-  const [sizeKey, setSizeKey] = useState('');
+  const [colorKey, setColorKey] = useState("");
+  const [sizeKey, setSizeKey] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [activeImageUrl, setActiveImageUrl] = useState<string | undefined>();
@@ -81,7 +81,7 @@ export default function MerchProductPage() {
       try {
         const [data, catalog] = await Promise.all([
           clientApiGet<PrintifyProduct>(`/printify/products/${productId}`),
-          clientApiGet<PrintifyProduct[]>('/printify/products', {
+          clientApiGet<PrintifyProduct[]>("/printify/products", {
             artistId: artist.id,
           }),
         ]);
@@ -92,20 +92,18 @@ export default function MerchProductPage() {
           const grouped = groupMerchVariants(data);
           const firstColor = grouped.colors[0];
           const firstSize = sizesForColor(grouped.sizes, firstColor)[0];
-          setColorKey(firstColor?.key ?? '');
-          setSizeKey(firstSize?.key ?? '');
+          setColorKey(firstColor?.key ?? "");
+          setSizeKey(firstSize?.key ?? "");
         } else {
-          setColorKey('');
-          setSizeKey('');
+          setColorKey("");
+          setSizeKey("");
         }
 
         setRelated(
-          (catalog ?? [])
-            .filter((item) => item.id !== productId)
-            .slice(0, 4),
+          (catalog ?? []).filter((item) => item.id !== productId).slice(0, 4),
         );
       } catch {
-        toast.error('Could not load product');
+        toast.error("Could not load product");
         setProduct(null);
       } finally {
         if (mounted) setLoading(false);
@@ -118,10 +116,7 @@ export default function MerchProductPage() {
   }, [productId, artist.id]);
 
   const { colors, sizes } = useMemo(
-    () =>
-      product
-        ? groupMerchVariants(product)
-        : { colors: [], sizes: [] },
+    () => (product ? groupMerchVariants(product) : { colors: [], sizes: [] }),
     [product],
   );
 
@@ -155,7 +150,7 @@ export default function MerchProductPage() {
     const nextColor = colors.find((color) => color.key === key);
     const nextSizes = sizesForColor(sizes, nextColor);
     if (!nextSizes.some((size) => size.key === sizeKey)) {
-      setSizeKey(nextSizes[0]?.key ?? '');
+      setSizeKey(nextSizes[0]?.key ?? "");
     }
   };
 
@@ -179,8 +174,8 @@ export default function MerchProductPage() {
   }
 
   const handleAdd = () => {
-    if (!selectedVariant || typeof selectedVariant.price !== 'number') {
-      toast.error('Select an available variant');
+    if (!selectedVariant || typeof selectedVariant.price !== "number") {
+      toast.error("Select an available variant");
       return;
     }
     addMerchCartItem({
@@ -188,15 +183,18 @@ export default function MerchProductPage() {
       variantId: selectedVariant.id,
       quantity,
       title: product.title,
-      variantTitle: [selectedColor?.title, selectedSize?.title]
-        .filter(Boolean)
-        .join(' / ') || selectedVariant.title || String(selectedVariant.id),
+      variantTitle:
+        [selectedColor?.title, selectedSize?.title]
+          .filter(Boolean)
+          .join(" / ") ||
+        selectedVariant.title ||
+        String(selectedVariant.id),
       imageUrl: activeImageUrl ?? galleryImages[0]?.src,
       unitAmount: selectedVariant.price,
       artistId: product.artistId ?? artist.id,
       artistName: product.artistName ?? artist.name,
     });
-    toast.success('Added to cart');
+    toast.success("Added to cart");
   };
 
   return (
@@ -256,8 +254,8 @@ export default function MerchProductPage() {
                             onClick={() => selectColor(color.key)}
                             className={`flex items-center gap-2 rounded-full border px-2 py-1.5 text-left text-xs font-semibold tracking-wide uppercase transition ${
                               selected
-                                ? 'border-artist-amber/70 bg-artist-amber/10 text-artist-cream'
-                                : 'border-artist-cream/15 text-artist-cream-muted hover:border-artist-cream/35 hover:text-artist-cream'
+                                ? "border-artist-amber/70 bg-artist-amber/10 text-artist-cream"
+                                : "border-artist-cream/15 text-artist-cream-muted hover:border-artist-cream/35 hover:text-artist-cream"
                             }`}
                           >
                             <ColorSwatch
@@ -288,8 +286,8 @@ export default function MerchProductPage() {
                             onClick={() => setSizeKey(size.key)}
                             className={`min-w-12 rounded-xl border px-3 py-2.5 text-sm font-semibold uppercase transition ${
                               selected
-                                ? 'border-artist-amber bg-artist-amber/15 text-artist-amber-light'
-                                : 'border-artist-cream/15 text-artist-cream hover:border-artist-cream/35'
+                                ? "border-artist-amber bg-artist-amber/15 text-artist-amber-light"
+                                : "border-artist-cream/15 text-artist-cream hover:border-artist-cream/35"
                             }`}
                           >
                             {size.title}
@@ -389,7 +387,7 @@ export default function MerchProductPage() {
                 (v) =>
                   v.is_enabled !== false &&
                   v.is_available !== false &&
-                  typeof v.price === 'number',
+                  typeof v.price === "number",
               )?.price;
 
               return (

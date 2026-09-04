@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { getOrgInfo } from '@/lib/org-info';
+import Link from "next/link";
+import { getOrgInfo } from "@/lib/org-info";
 
 export default function Footer({
   artistName,
@@ -24,7 +24,10 @@ export default function Footer({
             Terms & Conditions
           </Link>
           <span className="text-artist-cream/20">·</span>
-          <a href={artistHomeUrl} className="transition hover:text-artist-amber">
+          <a
+            href={artistHomeUrl}
+            className="transition hover:text-artist-amber"
+          >
             Artist site
           </a>
           <span className="text-artist-cream/20">·</span>

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   formatMerchMoney,
   getMerchCart,
   removeMerchCartItem,
   updateMerchCartQuantity,
   type MerchCartItem,
-} from '@/lib/merch-cart';
+} from "@/lib/merch-cart";
 
 export default function CartPage() {
   const [items, setItems] = useState<MerchCartItem[]>([]);
@@ -19,11 +19,11 @@ export default function CartPage() {
   useEffect(() => {
     refresh();
     const onChange = () => refresh();
-    window.addEventListener('sdr-merch-cart', onChange);
-    window.addEventListener('storage', onChange);
+    window.addEventListener("sdr-merch-cart", onChange);
+    window.addEventListener("storage", onChange);
     return () => {
-      window.removeEventListener('sdr-merch-cart', onChange);
-      window.removeEventListener('storage', onChange);
+      window.removeEventListener("sdr-merch-cart", onChange);
+      window.removeEventListener("storage", onChange);
     };
   }, []);
 
@@ -38,7 +38,7 @@ export default function CartPage() {
 
       {items.length === 0 ? (
         <p className="mt-8 text-artist-cream-muted">
-          Your cart is empty.{' '}
+          Your cart is empty.{" "}
           <Link href="/" className="text-artist-amber">
             Browse merch
           </Link>

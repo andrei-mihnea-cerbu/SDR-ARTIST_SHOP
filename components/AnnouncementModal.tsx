@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { clientApiGet } from '@/lib/client-api';
-import type { Announcement } from '@/types';
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { clientApiGet } from "@/lib/client-api";
+import type { Announcement } from "@/types";
 
-const STORAGE_KEY = 'sdr-viewed-announcements';
+const STORAGE_KEY = "sdr-viewed-announcements";
 const REFRESH_INTERVAL = 3 * 24 * 60 * 60 * 1000;
 
 function getStoredViews() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') as Array<{
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as Array<{
       id: string;
       date: number;
     }>;
@@ -40,7 +40,7 @@ export default function AnnouncementModal() {
     (async () => {
       try {
         const data =
-          (await clientApiGet<Announcement[]>('/announcements', {
+          (await clientApiGet<Announcement[]>("/announcements", {
             active: true,
           })) ?? [];
         const stored = getStoredViews();
@@ -58,7 +58,7 @@ export default function AnnouncementModal() {
           }, 2500);
         }
       } catch (e) {
-        console.error('Announcement load error:', e);
+        console.error("Announcement load error:", e);
       }
     })();
     return () => {
@@ -74,16 +74,16 @@ export default function AnnouncementModal() {
     if (!visible) return;
 
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') handleClose();
+      if (event.key === "Escape") handleClose();
     };
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [visible]);
 
@@ -105,7 +105,7 @@ export default function AnnouncementModal() {
         aria-modal="true"
         aria-labelledby="artist-announcement-title"
         className="relative z-10 flex max-h-[min(92dvh,100%)] w-full max-w-xl flex-col overflow-hidden rounded-t-3xl border border-artist-cream/10 bg-artist-gray-950 text-artist-cream sm:rounded-3xl"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="flex shrink-0 items-center justify-between gap-3 px-4 pt-4 sm:px-8 sm:pt-8">
           <span className="rounded-lg bg-artist-brown/20 px-3 py-1 text-[10px] font-extrabold tracking-[0.15em] text-artist-brown-light uppercase">

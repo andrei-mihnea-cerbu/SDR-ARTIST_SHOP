@@ -1,21 +1,21 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { formatMerchMoney } from '@/lib/merch-cart';
-import { serverApiGet } from '@/lib/server-api';
-import type { Artist, PrintifyProduct } from '@/types';
+import Image from "next/image";
+import Link from "next/link";
+import { formatMerchMoney } from "@/lib/merch-cart";
+import { serverApiGet } from "@/lib/server-api";
+import type { Artist, PrintifyProduct } from "@/types";
 
 function lowestPrice(product: PrintifyProduct): number | null {
   const prices = (product.variants ?? [])
     .filter((v) => v.is_enabled !== false && v.is_available !== false)
     .map((v) => v.price)
-    .filter((price): price is number => typeof price === 'number');
+    .filter((price): price is number => typeof price === "number");
   if (prices.length === 0) return null;
   return Math.min(...prices);
 }
 
 export default async function MerchCatalog({ artist }: { artist: Artist }) {
   const products =
-    (await serverApiGet<PrintifyProduct[]>('/printify/products', {
+    (await serverApiGet<PrintifyProduct[]>("/printify/products", {
       artistId: artist.id,
     })) ?? [];
 

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type MerchGalleryImage = {
   src: string;
@@ -42,20 +42,26 @@ export default function MerchImageGallery({
   useEffect(() => {
     setActiveIndex(0);
     const track = trackRef.current;
-    if (track) track.scrollTo({ left: 0, behavior: 'auto' });
+    if (track) track.scrollTo({ left: 0, behavior: "auto" });
   }, [gallery]);
 
-  const scrollToIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
+  const scrollToIndex = (
+    index: number,
+    behavior: ScrollBehavior = "smooth",
+  ) => {
     const track = trackRef.current;
     if (!track) return;
     const slide = track.children[index] as HTMLElement | undefined;
     if (!slide) return;
     skipScrollSync.current = true;
-    slide.scrollIntoView({ behavior, inline: 'center', block: 'nearest' });
+    slide.scrollIntoView({ behavior, inline: "center", block: "nearest" });
     setActiveIndex(index);
-    window.setTimeout(() => {
-      skipScrollSync.current = false;
-    }, behavior === 'smooth' ? 450 : 50);
+    window.setTimeout(
+      () => {
+        skipScrollSync.current = false;
+      },
+      behavior === "smooth" ? 450 : 50,
+    );
   };
 
   useEffect(() => {
@@ -68,19 +74,18 @@ export default function MerchImageGallery({
       image.variantIds.includes(variantId),
     );
     if (matchIndex >= 0) {
-      scrollToIndex(matchIndex, 'smooth');
+      scrollToIndex(matchIndex, "smooth");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only react to variant changes
   }, [variantId]);
 
   useEffect(() => {
     const thumb = thumbsRef.current?.children[activeIndex] as
-      | HTMLElement
-      | undefined;
+      HTMLElement | undefined;
     thumb?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
     });
   }, [activeIndex]);
 
@@ -156,9 +161,7 @@ export default function MerchImageGallery({
             <button
               type="button"
               aria-label="Next image"
-              onClick={() =>
-                scrollToIndex((activeIndex + 1) % gallery.length)
-              }
+              onClick={() => scrollToIndex((activeIndex + 1) % gallery.length)}
               className="carousel-nav-btn absolute top-1/2 right-3 z-10 hidden -translate-y-1/2 md:flex"
             >
               <ChevronRight className="h-5 w-5" />
@@ -170,8 +173,8 @@ export default function MerchImageGallery({
                   key={`dot-${image.src}`}
                   className={`h-1.5 rounded-full transition ${
                     index === activeIndex
-                      ? 'w-5 bg-artist-amber'
-                      : 'w-1.5 bg-artist-cream/35'
+                      ? "w-5 bg-artist-amber"
+                      : "w-1.5 bg-artist-cream/35"
                   }`}
                 />
               ))}
@@ -195,8 +198,8 @@ export default function MerchImageGallery({
                 onClick={() => scrollToIndex(index)}
                 className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border transition sm:h-24 sm:w-24 ${
                   active
-                    ? 'border-artist-amber/70 ring-1 ring-artist-amber/40'
-                    : 'border-artist-cream/10 opacity-70 hover:opacity-100'
+                    ? "border-artist-amber/70 ring-1 ring-artist-amber/40"
+                    : "border-artist-cream/10 opacity-70 hover:opacity-100"
                 }`}
               >
                 <Image

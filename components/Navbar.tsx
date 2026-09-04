@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { ExternalLink, ShoppingBag } from 'lucide-react';
-import { getMerchCartCount } from '@/lib/merch-cart';
-import type { Artist } from '@/types';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ExternalLink, ShoppingBag } from "lucide-react";
+import { getMerchCartCount } from "@/lib/merch-cart";
+import type { Artist } from "@/types";
 
 function useSiteHeaderHeight() {
   useEffect(() => {
-    const header = document.querySelector('header');
+    const header = document.querySelector("header");
     if (!header) return;
 
     const update = () => {
       document.documentElement.style.setProperty(
-        '--site-header-height',
+        "--site-header-height",
         `${header.offsetHeight}px`,
       );
     };
@@ -22,11 +22,11 @@ function useSiteHeaderHeight() {
     update();
     const observer = new ResizeObserver(update);
     observer.observe(header);
-    window.addEventListener('resize', update);
+    window.addEventListener("resize", update);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('resize', update);
+      window.removeEventListener("resize", update);
     };
   }, []);
 }
@@ -46,11 +46,11 @@ export default function Navbar({
   useEffect(() => {
     const refresh = () => setCartCount(getMerchCartCount());
     refresh();
-    window.addEventListener('sdr-merch-cart', refresh);
-    window.addEventListener('storage', refresh);
+    window.addEventListener("sdr-merch-cart", refresh);
+    window.addEventListener("storage", refresh);
     return () => {
-      window.removeEventListener('sdr-merch-cart', refresh);
-      window.removeEventListener('storage', refresh);
+      window.removeEventListener("sdr-merch-cart", refresh);
+      window.removeEventListener("storage", refresh);
     };
   }, []);
 
@@ -68,9 +68,9 @@ export default function Navbar({
           <Link
             href="/"
             className={`hidden rounded-full px-3 py-2 text-xs font-semibold tracking-wide transition md:inline-flex ${
-              pathname === '/' || pathname.startsWith('/merch')
-                ? 'bg-artist-amber/15 text-artist-amber-light'
-                : 'text-artist-cream/75 hover:bg-artist-cream/5 hover:text-artist-cream'
+              pathname === "/" || pathname.startsWith("/merch")
+                ? "bg-artist-amber/15 text-artist-amber-light"
+                : "text-artist-cream/75 hover:bg-artist-cream/5 hover:text-artist-cream"
             }`}
           >
             Shop
@@ -78,9 +78,9 @@ export default function Navbar({
           <Link
             href="/cart"
             className={`relative inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold tracking-wide transition ${
-              pathname === '/cart' || pathname === '/checkout'
-                ? 'bg-artist-amber/15 text-artist-amber-light'
-                : 'text-artist-cream/75 hover:bg-artist-cream/5 hover:text-artist-cream'
+              pathname === "/cart" || pathname === "/checkout"
+                ? "bg-artist-amber/15 text-artist-amber-light"
+                : "text-artist-cream/75 hover:bg-artist-cream/5 hover:text-artist-cream"
             }`}
           >
             <ShoppingBag className="h-4 w-4" />
